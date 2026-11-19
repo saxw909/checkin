@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>活動集點中...</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 50px 20px;">
+<h2 id="status">⏳ 正在為您登記點數，請稍候...</h2>
+<p id="detail" style="color: #666;"></p>
+<script>
+   var gasUrl = "https://script.google.com/macros/s/AKfycbz8MwZvdGZ7M3aRHIPm2FXin2beJ2cr1YGEtbcpBU1--hGmLqaNyUAlRulEARAA5CCO2w/exec";
+   var myLiffId = "2011983559-UXCZyiFY";
+   var urlParams = new URLSearchParams(window.location.search);
+   var stationName = urlParams.get('station') || "一般集點";
+   liff.init({ liffId: myLiffId }).then(function() {
+     if (!liff.isLoggedIn()) {
+       liff.login({ redirectUri: window.location.href });
+     } else {
+       liff.getProfile().then(function(profile) {
+         var fetchUrl = gasUrl + "?uid=" + encodeURIComponent(profile.userId) + "&station=" + encodeURIComponent(stationName);
+         fetch(fetchUrl)
+           .then(function(response) { return response.text(); })
+           .then(function(result) {
+             if (result === "SUCCESS") {
+               document.getElementById("status").innerText = "✅ 集點成功！";
+               document.getElementById("detail").innerText = "已成功登記「" + stationName + "」1 點，您可以關閉此視窗。";
+             } else {
+               document.getElementById("status").innerText = "❌ 集點失敗，請重新掃描";
+             }
+           })
+           .catch(function(err) {
+             document.getElementById("status").innerText = "❌ 連線異常，請再試一次";
+           });
+       });
+     }
+   }).catch(function(err) {
+     document.getElementById("status").innerText = "❌ 系統錯誤：" + err;
+   });
+</script>
+</body>
+</html>
