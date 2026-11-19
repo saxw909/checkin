@@ -16,7 +16,7 @@
        liff.login();
      } else {
        liff.getProfile().then(function(profile) {
-         window.location.replace(surveyUrl + "?uid=" + profile.userId);
+         window.location.replace(surveyUrl + "?aka_uid=" + profile.userId);
        });
      }
    }).catch(function(err) {
