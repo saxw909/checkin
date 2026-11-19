@@ -3,13 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>報到測試</title>
+<title>活動報到轉址中...</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
-<body style="font-family: sans-serif; text-align: center; padding: 40px 20px;">
-<h3 id="msg">正在向 LINE 詢問您的身分...</h3>
-<p id="uid_box" style="word-break: break-all; color: blue; font-weight: bold;"></p>
-<a id="go_btn" href="#" style="display:none; padding: 15px 30px; background: #06C755; color: white; text-decoration: none; border-radius: 8px; font-size: 18px;">點此前往問卷</a>
+<body style="font-family: sans-serif; text-align: center; padding-top: 50px;">
+<p>正在讀取您的 LINE 身分並前往問卷，請稍候...</p>
 <script>
    var surveyUrl = "https://www.surveycake.com/s/Z2vrM";
    var myLiffId = "2011983559-ZMeEfSWm";
@@ -18,16 +16,11 @@
        liff.login();
      } else {
        liff.getProfile().then(function(profile) {
-         var uid = profile.userId;
-         document.getElementById("msg").innerText = "✅ 成功抓到您的 UID！";
-         document.getElementById("uid_box").innerText = uid;
-         var btn = document.getElementById("go_btn");
-         btn.href = surveyUrl + "?uid=" + uid;
-         btn.style.display = "inline-block";
+         window.location.replace(surveyUrl + "?uid=" + profile.userId);
        });
      }
    }).catch(function(err) {
-     document.getElementById("msg").innerText = "❌ 發生錯誤：" + err;
+     alert("發生錯誤：" + err);
    });
 </script>
 </body>
